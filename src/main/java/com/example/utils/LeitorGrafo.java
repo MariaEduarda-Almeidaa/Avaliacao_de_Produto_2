@@ -4,7 +4,15 @@ import com.example.grafos.Grafo;
 import java.io.*;
 
 public class LeitorGrafo {
-    public static Grafo lerArquivo(String caminho) throws IOException {
+
+    /**
+     * Lê um arquivo de grafo.
+     * @param caminho Caminho do arquivo .gr
+     * @param isDirigido TRUE = cria grafo dirigido (Dijkstra), FALSE = cria grafo não-dirigido (AGM)
+     * @return O objeto Grafo.
+     * @throws IOException
+     */
+    public static Grafo lerArquivo(String caminho, boolean isDirigido) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(caminho));
         String linha;
         int n = 0;
@@ -13,6 +21,7 @@ public class LeitorGrafo {
         while ((linha = br.readLine()) != null) {
             if (linha.startsWith("c") || linha.isBlank()) continue;
             String[] partes = linha.split(" ");
+            
             if (linha.startsWith("p")) {
                 n = Integer.parseInt(partes[2]);
                 g = new Grafo(n);
@@ -20,7 +29,13 @@ public class LeitorGrafo {
                 int u = Integer.parseInt(partes[1]);
                 int v = Integer.parseInt(partes[2]);
                 double peso = Double.parseDouble(partes[3]);
-                g.adicionarAresta(u, v, peso);
+                
+                // --- AQUI ESTÁ A LÓGICA CORRIGIDA ---
+                if (isDirigido) {
+                    g.adicionarArestaDirigida(u, v, peso);
+                } else {
+                    g.adicionarArestaNaoDirigida(u, v, peso);
+                }
             }
         }
         br.close();

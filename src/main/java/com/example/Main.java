@@ -1,12 +1,13 @@
 package com.example;
 
+// Importa o novo algoritmo
+import com.example.algoritmos.EdmondsKarp;
 import com.example.algoritmos.Dijkstra;
 import com.example.algoritmos.Kruskal;
 import com.example.algoritmos.Prim;
 import com.example.grafos.*;
 import com.example.utils.LeitorGrafo;
 import com.example.utils.GeradorCSV;
-
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -18,34 +19,61 @@ public class Main {
 
         GeradorCSV csv = new GeradorCSV("resultados.csv");
 
+        // --- NOVO: Limite de segurança para a Matriz ---
+        // Vamos definir um limite. Grafos com mais de 50.000 vértices
+        // provavelmente vão quebrar a implementação O(V^2).
+        final int LIMITE_VERTICES_FM = 50000;
+
         for (String caminho : instancias) {
             System.out.println("\n==> Processando: " + caminho);
             long inicio, fim;
-            Grafo g = LeitorGrafo.lerArquivo(caminho);
 
-            int n = g.getNumeroVertices();
-            int m = g.getTodasArestas().size();
+            Grafo g_CM = LeitorGrafo.lerArquivo(caminho, true);
+            Grafo g_AGM = LeitorGrafo.lerArquivo(caminho, false);
 
-            // Dijkstra
+            int n = g_CM.getNumeroVertices();
+            int m = g_CM.getNumeroArestas();
+
+            // Dijkstra (CM)
             inicio = System.nanoTime();
-            double[] dist = Dijkstra.executar(g, 1);
+            double[] dist = Dijkstra.executar(g_CM, 1);
             fim = System.nanoTime();
             double cmTempo = (fim - inicio) / 1e9;
             double cmCusto = Dijkstra.custoTotal(dist);
 
-            // Kruskal
+            // Kruskal (AGM)
             inicio = System.nanoTime();
-            double kCusto = Kruskal.executar(g);
+            double kCusto = Kruskal.executar(g_AGM);
             fim = System.nanoTime();
             double kTempo = (fim - inicio) / 1e9;
 
-            // Prim
+            // Prim (AGM)
             inicio = System.nanoTime();
-            double pCusto = Prim.executar(g);
+            double pCusto = Prim.executar(g_AGM);
             fim = System.nanoTime();
             double pTempo = (fim - inicio) / 1e9;
 
-            csv.adicionarLinha(n, m, cmCusto, cmTempo, kCusto, kTempo, pCusto, pTempo);
+            // --- Edmonds-Karp (FM) COM TRAVA DE SEGURANÇA ---
+            double fmCusto = 0;
+            double fmTempo = 0;
+
+            if (n > LIMITE_VERTICES_FM) {
+                // Se 'n' for muito grande, nem tenta.
+                System.out.printf("FM: N/A (Grafo com n=%d excede limite de %d para matriz O(V^2))\n", n, LIMITE_VERTICES_FM);
+            } else {
+                // Só executa se o grafo for pequeno o suficiente
+                int s = 1;
+                int t = n;
+                
+                inicio = System.nanoTime();
+                fmCusto = EdmondsKarp.executar(g_CM, s, t);
+                fim = System.nanoTime();
+                fmTempo = (fim - inicio) / 1e9;
+                System.out.printf("FM: custo=%.2f tempo=%.3fs\n", fmCusto, fmTempo);
+            }
+
+            // Adiciona a linha (com 0 para FM se não foi executado)
+            csv.adicionarLinha(n, m, cmCusto, cmTempo, kCusto, kTempo, pCusto, pTempo, fmCusto, fmTempo);
 
             System.out.printf("CM: custo=%.2f tempo=%.3fs\n", cmCusto, cmTempo);
             System.out.printf("Kruskal: custo=%.2f tempo=%.3fs\n", kCusto, kTempo);
@@ -54,5 +82,10 @@ public class Main {
 
         csv.salvar();
         System.out.println("\nTabela salva em resultados.csv ✅");
+
+        System.out.println("Abrindo visualizador...");
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            new com.example.utils.VisualizadorTabela("resultados.csv");
+        });
     }
 }
