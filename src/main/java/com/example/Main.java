@@ -1,7 +1,5 @@
 package com.example;
 
-
-import com.example.algoritmos.EdmondsKarp;
 import com.example.algoritmos.Dijkstra;
 import com.example.algoritmos.Dinic;
 import com.example.algoritmos.Kruskal;
@@ -13,9 +11,9 @@ import com.example.utils.GeradorCSV;
 public class Main {
     public static void main(String[] args) throws Exception {
         String[] instancias = {
-            "arquivos/USA-road-d.NY.gr",
-            "arquivos/USA-road-d.BAY.gr",
-            "arquivos/USA-road-d.COL.gr"
+            "dados/USA-road-d.NY.gr",
+            "dados/USA-road-d.BAY.gr",
+            "dados/USA-road-d.COL.gr"
         };
 
         GeradorCSV csv = new GeradorCSV("resultados.csv");
@@ -55,7 +53,7 @@ public class Main {
 
             try {
                 inicio = System.nanoTime();
-                fmCusto = new Dinic().maxFlow(g_CM, s, t);  // <--- DINIC
+                fmCusto = new Dinic().maxFlow(g_CM, s, t);  
                 fim = System.nanoTime();
                 fmTempo = (fim - inicio) / 1e9;
                 System.out.printf("FM: custo=%.2f tempo=%.3fs\n", fmCusto, fmTempo);
@@ -76,11 +74,11 @@ public class Main {
         }
 
         csv.salvar();
-        System.out.println("\nTabela salva em resultados.csv ✅");
+        System.out.println("\nTabela salva em resultados.csv ");
 
         System.out.println("Abrindo visualizador...");
         javax.swing.SwingUtilities.invokeLater(() -> {
-            new com.example.utils.VisualizadorTabela("resultados.csv");
+            new com.example.ui.VisualizadorTabela("resultados.csv");
         });
     }
 }

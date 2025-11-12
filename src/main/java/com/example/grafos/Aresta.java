@@ -11,7 +11,6 @@ public class Aresta implements Comparable<Aresta> {
         this.peso = peso;
     }
 
-    // GETTERS OBRIGATÓRIOS
     public int getOrigem() { return origem; }
     public int getDestino() { return destino; }
     public double getPeso() { return peso; }

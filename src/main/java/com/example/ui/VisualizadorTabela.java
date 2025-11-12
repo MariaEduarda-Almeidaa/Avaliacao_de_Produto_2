@@ -1,4 +1,4 @@
-package com.example.utils;
+package com.example.ui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -27,7 +27,6 @@ public class VisualizadorTabela extends JFrame {
     
     private final int alturaLinha = 22;
 
-  
 
     public VisualizadorTabela(String caminhoArquivo) {
        
