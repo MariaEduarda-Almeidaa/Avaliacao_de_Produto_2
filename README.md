@@ -1,4 +1,4 @@
-# Avaliação de Algoritmos de Grafos
+# Avaliação de Algoritmos de Grafos 
 
 Este repositório contém uma implementação em Java de vários algoritmos de grafos usados para avaliação comparativa e experimentos. O objetivo principal do projeto é oferecer um ambiente para executar, comparar e analisar algoritmos clássicos de grafos sobre instâncias reais (ou geradas) e coletar os resultados em CSV.
 
