@@ -11,7 +11,7 @@ public class GeradorCSV {
     public GeradorCSV(String caminho) {
         this.caminho = caminho;
         // ALTERAÇÃO AQUI: Adicionei "Instancia" no cabeçalho
-        sb.append("Instancia,n (Vértices),m (Arestas),CM_custo,CM_tempo,AGM_custo,AGM_tempo,FM_custo,FM_tempo\n");
+        sb.append("Instancia,n (Vértices),m,CM_custo,CM_tempo,AGM_custo,AGM_tempo,FM_custo,FM_tempo\n");
     }
 
     /**

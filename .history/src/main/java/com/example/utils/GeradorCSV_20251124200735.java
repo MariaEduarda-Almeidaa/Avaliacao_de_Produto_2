@@ -11,7 +11,7 @@ public class GeradorCSV {
     public GeradorCSV(String caminho) {
         this.caminho = caminho;
         // ALTERAÇÃO AQUI: Adicionei "Instancia" no cabeçalho
-        sb.append("Instancia,n (Vértices),m (Arestas),CM_custo,CM_tempo,AGM_custo,AGM_tempo,FM_custo,FM_tempo\n");
+        sb.append("Instancia,n,m,CM_custo,CM_tempo,AGM_custo,AGM_tempo,FM_custo,FM_tempo\n");
     }
 
     /**
@@ -24,13 +24,12 @@ public class GeradorCSV {
      * @param fmCusto 
      * @param fmTempo 
      */
-    // ALTERAÇÃO AQUI: Adicionei o parâmetro 'String nome'
-    public void adicionarLinha(String nome, int n, int m, double cmCusto, double cmTempo,
+    public void adicionarLinha(int n, int m, double cmCusto, double cmTempo,
         double agmCusto, double agmTempo, double fmCusto, double fmTempo) {
         
-        // ALTERAÇÃO AQUI: Adicionei o '%s' no início e a variável 'nome'
-        sb.append(String.format(Locale.US, "%s,%d,%d,%.2f,%.6f,%.2f,%.6f,%.2f,%.6f\n",
-            nome, n, m, cmCusto, cmTempo, agmCusto, agmTempo, fmCusto, fmTempo));
+    
+    sb.append(String.format(Locale.US, "%d,%d,%.2f,%.6f,%.2f,%.6f,%.2f,%.6f\n",
+        n, m, cmCusto, cmTempo, agmCusto, agmTempo, fmCusto, fmTempo));
     }
 
     public void salvar() throws IOException {

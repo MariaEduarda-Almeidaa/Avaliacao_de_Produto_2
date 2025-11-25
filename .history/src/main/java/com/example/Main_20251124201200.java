@@ -68,7 +68,7 @@ public class Main {
 
             double agmCusto = kCusto;
             double agmTempo = Math.min(kTempo, pTempo);
-            csv.adicionarLinha(nomeInstancia, n, m, cmCusto, cmTempo, agmCusto, agmTempo, fmCusto, fmTempo);
+csv.adicionarLinha(nomeInstancia, n, m, cmCusto, cmTempo, agmCusto, agmTempo, fmCusto, fmTempo);
             System.out.printf("CM: custo=%.2f tempo=%.3fs\n", cmCusto, cmTempo);
             System.out.printf("Kruskal: custo=%.2f tempo=%.3fs\n", kCusto, kTempo);
             System.out.printf("Prim: custo=%.2f tempo=%.3fs\n", pCusto, pTempo);
